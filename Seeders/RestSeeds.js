@@ -5,6 +5,8 @@ var Restaurant = require('../models/Restaurant');
 //We connect to the local host under jwt so the different users can access different seeds.
 //We require the model, so the data is populated in the db.
 
+//<--------------To seed the db, use 'npm run seeddb' from the server command line.---------------->
+
 //Set the Array of objects to a const.
 const restSeeds = [
   {
