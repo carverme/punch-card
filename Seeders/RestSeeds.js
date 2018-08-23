@@ -1,24 +1,9 @@
-require('dotenv').config();
-const express = require('express');
-const bp = require('body-parser');
 const mongoose = require('mongoose');
-const expressJWT = require('express-jwt');
-var Restaurant = require('./models/Restaurant');
-
-const app = express();
-
-// Need bp.json() to accept POST data from axios route on front
-app.use(bp.json());
-app.use(bp.urlencoded({extended: false}));
-app.use(express.static(__dirname + '/client/build'));
-app.use('/auth', require('./routes/auth'));
-app.use('/user', require('./routes/user'));
-app.use('/restaurant', require('./routes/restaurant'));
-app.use('/locked', expressJWT({secret: process.env.JWT_SECRET}).unless({method: "POST"}), require('./routes/locked'));
-
-// mongoose.connect('mongodb://localhost/jwtAuth');
-// Changed to this line for Heroku
-mongoose.connect(process.env.MONGODB_URI, {useMongoClient: true});
+mongoose.connect('mongodb://localhost/jwtAuth');
+var Restaurant = require('../models/Restaurant');
+//We require mongoose.
+//We connect to the local host under jwt so the different users can access different seeds.
+//We require the model, so the data is populated in the db.
 
 //Set the Array of objects to a const.
 const restSeeds = [
@@ -177,23 +162,8 @@ const restSeeds = [
     reqPunches: 10
   }
 ];
-// SEED ROUTE TO USE ONCE AND DELETE
-app.get('/seedme', (req, res) => {
-	Restaurant.create(restSeeds, (err, docs) => {
-  	console.log(err);
-  	console.log(docs);
-	})
+
+Restaurant.create(restSeeds, (err, docs) => {
+  console.log(err);
+  console.log(docs);
 })
-
-// Use this for production
-app.get('*', (req, res) => {
-  res.sendFile(__dirname + "/client/build/index.html");
-});
-
-let port = process.env.PORT || 3001;
-
-let server = app.listen(port, () => {
-  console.log(`Server listening on port ${port}`)
-});
-
-module.exports = server;

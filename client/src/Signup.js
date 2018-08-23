@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import {withRouter} from "react-router-dom";
 
 class Signup extends Component {
   constructor(props) {
@@ -26,7 +29,7 @@ class Signup extends Component {
   // POST to backend '/auth/signup' to add a new user
   handleSubmit(e) {
     e.preventDefault()
-    if (this.state.password.length < 8 || this.state.password > 99) {
+    if (this.state.password.length < 8 || this.state.password.length > 99) {
       // Password does not meet length requirements
       this.setState({
         error: {
@@ -54,22 +57,54 @@ class Signup extends Component {
           })
         }
       })
+      this.props.history.push("/cards")
     }
   }
 
   render() {
     return(
-      <div>
-        <p>{(this.state.response) ? this.state.response.message : ''}</p>
+      //This div is a Material UI container, with Signup form text boxes and a button.
+      <div className="form-container">
+        <div className="signup-header">
+          <h4>Sign up now to start collecting rewards at all your favorite restaurants and food trucks!</h4>
+        </div>
         <form onSubmit={this.handleSubmit}>
-          Name: <input type='text' name="name" value={this.state.name} onChange={this.handleInputChange} /><br />
-          Email: <input type='email' name="email" value={this.state.email} onChange={this.handleInputChange} /><br />
-          Password: <input type='password' name="password" value={this.state.password} onChange={this.handleInputChange} />
-          <button type="submit" value="Sign up">Sign Up</button>
+          <TextField
+            id="name"
+            name="name"
+            type="text"
+            label="Name"
+            className="nameField"
+            value={this.state.name}
+            onChange={this.handleInputChange}
+            margin="normal"
+          /><br />
+          <TextField
+            id="email"
+            name="email"
+            type="text"
+            label="Email"
+            className="emailField"
+            value={this.state.email}
+            onChange={this.handleInputChange}
+            margin="normal"
+          /><br />
+          <TextField
+            id="password"
+            name="password"
+            type="password"
+            label="Password"
+            className="passwordField"
+            value={this.state.password}
+            onChange={this.handleInputChange}
+            margin="normal"
+          /><br />
+          <Button variant="contained" color="primary" type="submit" value="Sign up">Sign up</Button>
         </form>
+        <p className="alert-msg">{(this.state.response) ? this.state.response.message : ''}</p>
       </div>
     )
   }
 }
 
-export default Signup
+export default withRouter(Signup)

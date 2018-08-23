@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import './App.css';
 import axios from 'axios';
 import Login from './Login'
 import Signup from './Signup';
-import {UserProfile} from './UserProfile';
 import Home from './Home';
+import Restaurant from "./Restaurant";
+import MenuAppBar from './MenuAppBar';
+import Card from './Card';
+import Cards from './Cards';
 
 class App extends Component {
   constructor(props) {
@@ -14,14 +16,17 @@ class App extends Component {
       token: '',
       user: null,
       lockedResult: '',
-      mapboxKey: process.env.REACT_APP_MAPBOX
+      mapboxKey: process.env.REACT_APP_MAPBOX,
+      restaurants: []
     }
     this.liftTokenToState = this.liftTokenToState.bind(this)
     this.logout = this.logout.bind(this)
     this.checkForLocalToken = this.checkForLocalToken.bind(this)
+    this.getRestaurants = this.getRestaurants.bind(this)
     this.handleClick = this.handleClick.bind(this)
   }
 
+  // Store user token in state
   liftTokenToState(data) {
     this.setState({
       token: data.token,
@@ -29,6 +34,7 @@ class App extends Component {
     })
   }
 
+  // Removing the token from local storage effectively logs out the user
   logout() {
     localStorage.removeItem('mernToken')
     // Remove user info from state
@@ -63,10 +69,21 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    this.checkForLocalToken()
+  // Retrieve all restaurants from the database
+  getRestaurants() {
+    axios.get("/restaurant").then(result => {
+      this.setState({
+        restaurants: result.data.restaurants
+      })
+    }).catch(err => console.log(err))
   }
 
+  componentDidMount() {
+    this.checkForLocalToken()
+    this.getRestaurants()
+  }
+
+  // Test locked routes
   handleClick(e) {
     e.preventDefault()
     axios.defaults.headers.common['Authorization'] = 'Bearer ' + this.state.token;
@@ -80,15 +97,21 @@ class App extends Component {
 
   render() {
     let user = this.state.user
-      return (
-        <Router>
-          <div className="App">
-            <Route exact path="/home" component = {() => <Home mapboxKey={this.state.mapboxKey}/>} />
-            <Route exact path="/signup" component = {() => <Signup liftToken={this.liftTokenToState} />} />
-            <Route exact path="/login" component = {() => <Login liftToken={this.liftTokenToState} />} />
-          </div>
-        </Router>
-      )
+
+    // React Router to render components based on specific url requests
+    return (
+      <Router>
+        <div className="App">
+          <MenuAppBar user={user} logout={this.logout}/>
+          <Route exact path="/" component = {() => <Home mapboxKey={this.state.mapboxKey} restaurants={this.state.restaurants}/>} />
+          <Route exact path="/signup" component = {() => <Signup liftToken={this.liftTokenToState} />} />
+          <Route exact path="/login" component = {() => <Login liftToken={this.liftTokenToState} />} />
+          <Route exact path="/restaurant/:id" component = {(props) => <Restaurant user={user} restaurants={this.state.restaurants} {...props}/>} />
+          <Route exact path="/cards" component = {(props) => <Cards user={user} restaurants={this.state.restaurants} {...props}/> } />
+          <Route exact path="/card/:id" component = {(props) => <Card user={user} restaurants={this.state.restaurants} {...props} /> } />
+        </div>
+      </Router>
+    )
   }
 }
 

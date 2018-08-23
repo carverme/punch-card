@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import MenuAppBar from './MenuAppBar';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import {Link} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
 
 class Login extends Component {
   constructor(props) {
@@ -8,7 +11,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      response: null
+      response: null,
     }
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -38,25 +41,47 @@ class Login extends Component {
         localStorage.setItem('mernToken', result.data.token)
         this.props.liftToken(result.data)
         this.setState({
-          response: null
+          response: null,
         })
+        this.props.history.push("/cards");
       }
     })
   }
 
   render() {
+    console.log("Logged In State Variable: ", this.state.loggedIn)
     return(
-      <div>
-        <MenuAppBar />
-        <p>{(this.state.response) ? this.state.response.message : ''}</p>
+      //This div is a Material UI container, with Login form text boxes and a button.
+      <div className="form-container">
         <form onSubmit={this.handleSubmit}>
-          Email: <input type="email" name="email" value={this.state.email} onChange={this.handleInputChange} /><br />
-          Password: <input type="password" name="password" value={this.state.password} onChange={this.handleInputChange} />
-          <button type="submit" value="Log In">Log In</button>
+          <TextField
+            id="email"
+            name="email"
+            label="Email"
+            className="emailField"
+            value={this.state.email}
+            onChange={this.handleInputChange}
+            margin="normal"
+          /><br />
+          <TextField
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            className="passwordField"
+            value={this.state.password}
+            onChange={this.handleInputChange}
+            margin="normal"
+          /><br />
+          <Button id="login-btn" variant="contained" color="primary" type="submit" value="Log In">Log In</Button>
         </form>
+        <div id="login-link">
+          <Link to={"/signup"}>Not a member? Sign up today!</Link>
+        </div>
+        <p className="alert-msg">{(this.state.response) ? this.state.response.message : ''}</p>
       </div>
     );
   }
 }
 
-export default Login
+export default withRouter(Login)

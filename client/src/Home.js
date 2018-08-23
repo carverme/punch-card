@@ -1,5 +1,8 @@
-import React, { Component } from 'react';
-import Map from './Map';
+import React, {Component} from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import ReactMapboxGl, {Marker, Popup} from "react-mapbox-gl";
+import {Link} from 'react-router-dom';
 
 class Home extends Component {
   constructor(props) {
@@ -17,14 +20,53 @@ class Home extends Component {
   }
 
   render() {
+    // Initialize Mapbox map
+    const Map = ReactMapboxGl({
+      accessToken: this.props.mapboxKey
+    })
+ 
+    // Create Markers and Popups to display each restaurant name and location with a link to the restaurant
+    let markerArray = this.props.restaurants.map(restaurant => {
+      return (<div>
+              <Marker
+                coordinates={[restaurant.lng, restaurant.lat]}
+                anchor="bottom">
+                <img id='map-icon' alt= 'icon-logo for webpage' src='https://cdn.onlinewebfonts.com/svg/img_198790.png'/>
+              </Marker>
+              <Popup
+              coordinates={[restaurant.lng, restaurant.lat]}
+              offset={{'bottom-left': [12, -38],  'bottom': [0, -38], 'bottom-right': [-12, -38]}}>
+              <Link to={"/restaurant/" + restaurant._id}>{restaurant.name}</Link>
+              </Popup>
+              </div>)
+    })
+
     return (
-      <div>
-        <p>
-          Come get your punch cards! Today!!!
-        </p>
-        <input value="search" type="submit" onChange={this.handleChange} />
-        <button type="submit">Search</button>
-        <Map mapboxKey={this.props.mapboxKey}/>
+      <div className="home-container">
+        <h4>Collect and use loyalty cards from all your favorite restaurants and food trucks!</h4>
+        {/* Commenting out the search bar until it can be implemented
+        <form onSubmit={this.handleSubmit}>
+          <TextField
+            id="search"
+            name="search"
+            className="searchField"
+            value={this.state.search}
+            onChange={this.handleChange}
+            margin="normal"
+          />
+          <Button id="search-btn" variant="contained" color="primary" type="submit">Search</Button>
+        </form> */}
+        <div className="map-wrapper">
+          <Map
+            style="mapbox://styles/scottammon/cjjfwon001qvd2rthricow465"
+            center={[-122.334020, 47.609676]}
+            zoom={[11]}
+            containerStyle={{
+              height: "60vh"
+            }}>
+            {markerArray}
+          </Map>
+        </div>
       </div>
     )
   }

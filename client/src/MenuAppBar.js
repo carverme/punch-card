@@ -12,6 +12,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import { Link } from 'react-router-dom';
 
 const styles = {
   root: {
@@ -28,38 +29,35 @@ const styles = {
 
 class MenuAppBar extends React.Component {
   state = {
-    auth: true,
-    anchorEl: null,
-  };
-
-  handleChange = (event, checked) => {
-    this.setState({ auth: checked });
-  };
+    anchorEl: null
+  }
 
   handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
-  };
+    this.setState({ anchorEl: event.currentTarget })
+  }
 
   handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
+    this.setState({ anchorEl: null })
+  }
+
+  // Call logout function passed as props and close menu
+  handleLogoutAndClose = () => {
+    this.setState({ anchorEl: null })
+    this.props.logout()
+  }
 
   render() {
     const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
+    const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
 
     return (
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="title" color="inherit" className={classes.flex}>
+            <Typography id="headline" component={Link} to="/" variant="title" color="inherit" className={classes.flex}>
               Punch Card
             </Typography>
-            {auth && (
               <div>
                 <IconButton
                   aria-owns={open ? 'menu-appbar' : null}
@@ -67,7 +65,7 @@ class MenuAppBar extends React.Component {
                   onClick={this.handleMenu}
                   color="inherit"
                 >
-                  <AccountCircle />
+                <AccountCircle />
                 </IconButton>
                 <Menu
                   id="menu-appbar"
@@ -83,11 +81,16 @@ class MenuAppBar extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                 >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
+                {this.props.user ? (
+                  <div>
+                    <MenuItem component={Link} to="/cards" onClick={this.handleClose}>Profile</MenuItem>
+                    <MenuItem onClick={this.handleLogoutAndClose}>Logout</MenuItem>
+                  </div>
+                ) : (
+                  <MenuItem component={Link} to="/login" onClick={this.handleClose}>Login</MenuItem>
+                )}
                 </Menu>
               </div>
-            )}
           </Toolbar>
         </AppBar>
       </div>

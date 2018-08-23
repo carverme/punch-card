@@ -4,7 +4,226 @@ body {
   font-family: sans-serif;
 }
 
-#map {
-	width: 600px;
-	height: 600px;
+.map-wrapper {
+  width: 90vw;
+  margin: 25px auto 0 auto;
+  text-align: center;
+}
+
+#search-btn {
+  margin-left: 1em;
+}
+
+#headline {
+  text-decoration: none;
+}
+
+.nameField,
+.emailField,
+.passwordField {
+  width: 90vw;
+}
+
+.home-container {
+  width: 90vw;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.card-container {
+  width: 20em;
+  margin: 0 auto;
+  text-align: center;
+  border: 1px solid black;
+  margin-top: 3em;
+  padding-bottom: 2em;
+  border-radius: 20px;
+  margin-bottom: 2em;
+}
+
+.form-container {
+  width: 90vw;
+  margin: 0 auto;
+  text-align: right;
+}
+
+.alert-msg {
+  color: red;
+  text-align: center;
+}
+
+.signup-header {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.MuiFormControl-marginNormal-93 {
+  margin-right: 2em;
+}
+
+.redeemButton {
+  margin-left: 2em;
+}
+
+.reqPunches {
+  margin-bottom: 4em;
+}
+
+.restaurantName {
+  margin-bottom: 2em;
+}
+
+.MuiButton-containedSecondary-130 {
+    color: #fff;
+    margin-left: 13em;
+    background-color: #f50057;
+}
+
+.removeCardButton {
+  margin-left: 11em;
+}
+
+.numberOfPunches {
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  margin-bottom: 2em;
+}
+
+.punch {
+  display: inline-block;
+  width: 1em;
+  border: 1px solid black;
+  height: 1em;
+  margin-right: .5em;
+  border-radius: 50%;
+}
+
+.punched {
+  display: inline-block;
+  width: 1em;
+  border: 1px solid black;
+  height: 1em;
+  margin-right: .5em;
+  border-radius: 50%;
+  background-color: black;
+}
+
+.restaurantText {
+  text-align: left;
+  width: 20em;
+  margin-left: 1em;
+}
+
+.restaurantLink {
+  text-decoration: none;
+}
+
+.theCards {
+  width: 70%;
+  margin: 10px auto;
+}
+
+.centerCards {
+  width: 90vw;
+  margin: 0 auto;
+}
+
+#newCard {
+  margin-left: 13em;
+  margin-bottom: 5em;
+  margin-top: 4em;
+}
+
+#login-link {
+  margin-top: 25px;
+  text-align: center;
+}
+
+#map-icon {
+  width: 20px;
+  height: 20px;
+}
+
+#restaurant-img {
+  height: auto;
+  border-radius: 8%;
+  width: 90vw;
+}
+
+@media (min-width: 480px) {
+
+  .card-container {
+    width: 35em;
+    margin: 0 auto;
+    text-align: center;
+    border: 1px solid black;
+    margin-top: 3em;
+    padding-bottom: 2em;
+    border-radius: 20px;
+    margin-bottom: 2em;
+  }
+
+  .removeCardButton {
+    margin-left: 25em;
+  }
+
+  .theCards {
+    width: 50%;
+    margin: 10px auto;
+  }
+
+  #restaurant-img {
+    height: auto;
+    border-radius: 8%;
+    width: 50vw;
+  }
+
+  .restaurantText {
+    text-align: left;
+    width: 18em;
+    margin-left: 11em;
+  }
+
+  #newCard {
+    margin-left: 13em;
+    margin-bottom: 5em;
+    margin-top: 2em;
+  }
+
+}
+
+@media (min-width: 760px) {
+
+  #newCard {
+    margin-left: 20em;
+    margin-bottom: 5em;
+    margin-top: 2em;
+  }
+
+}
+
+@media (min-width: 960px) {
+
+  .theCards {
+    width: 30%;
+    margin: 10px auto;
+  }
+
+  #restaurant-img {
+    height: auto;
+    border-radius: 8%;
+    width: 45vw;
+  }
+
+  .restaurantText {
+    text-align: left;
+    width: 20em;
+    margin-left: 15em;
+  }
+
 }
